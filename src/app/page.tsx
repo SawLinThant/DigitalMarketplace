@@ -1,9 +1,30 @@
+import { ArrowDown, CheckCircle, Leaf } from "lucide-react";
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 
 import { CreatePost } from "~/app/_components/create-post";
+import MaxWidthWrapper from "~/components/MaxWidthWrapper";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+
+const perk=[
+  {
+    name:'Instant Delivery',
+    icon: ArrowDown,
+    description:'Get your items delievered to your email in seconds and download them right away'
+  },
+  {
+    name:'Guranteed Quality',
+    icon: CheckCircle,
+    description:'Every asset on our platform is verified by our team for high quality standard',
+  },
+  {
+    name:'For the planet',
+    icon: Leaf,
+    description:'We have pledge 1% of sale to the preservation and restoration of the nature',
+  },
+]
 
 export default async function Home() {
   noStore();
@@ -11,74 +32,66 @@ export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+    <>
+     <MaxWidthWrapper>
+      <div className="py-20 m-auto text-center flex flex-col items-center max-w-3xl">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          Your market place for high quality{" "}
+          <span className="text-blue-600">Products</span>.
         </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
+        <p className="mt-6 text-lg max-w-prose text-muted-foreground">
+          welcome to DigitalHippo. Every asset on our platform is verified by
+          our team for high quality standard.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 mt-6">
+          <Link href="/product" className={buttonVariants()}>Browse Trending</Link>
+          <Button variant='ghost'>Our quality promise &rarr;</Button>
         </div>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-2xl text-white">
-            {hello ? hello.greeting : "Loading tRPC query..."}
-          </p>
-
-          <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-center text-2xl text-white">
-              {session && <span>Logged in as {session.user?.name}</span>}
-            </p>
-            <Link
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-            >
-              {session ? "Sign out" : "Sign in"}
-            </Link>
-          </div>
-        </div>
-
-        <CrudShowcase />
       </div>
-    </main>
+      {/* TO DO LIST*/ }
+    </MaxWidthWrapper>
+    <section className="border-t border-gray-300 bg-gray-50">
+      <MaxWidthWrapper classname="py-20">
+        <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-3 lg:gap-y-0">
+          {perk.map((perk)=>(
+          <div key={perk.name}
+               className="text-center md:fex md:items-start md:text-left lg:block lg:text-center"
+          >
+              <div className="md:flex-shrink-0 flex justify-center sm:mt-5">
+                <div className="h-16 w-16 flex items-center justify-center rounded-full bg-blue-100 text-blue-900">
+                  {<perk.icon className="w-1/3 h-1/3"/>}
+                </div>
+              </div>
+              <div className="mt-6 md:ml-4 md:mt-0 lg:ml-0 lg:mb-6">
+                <h3 className="text-base font-medium text-gray-900">{perk.name}</h3>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {perk.description}
+                </p>
+              </div>
+          </div>
+          ))}
+        </div>
+      </MaxWidthWrapper>
+    </section>
+    </>
   );
 }
 
-async function CrudShowcase() {
-  const session = await getServerAuthSession();
-  if (!session?.user) return null;
+// async function CrudShowcase() {
+//   const session = await getServerAuthSession();
+//   if (!session?.user) return null;
 
-  const latestPost = await api.post.getLatest.query();
+//   const latestPost = await api.post.getLatest.query();
 
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
+//   return (
+//     <div className="w-full max-w-xs">
+//       {latestPost ? (
+//         <p className="truncate">Your most recent post: {latestPost.name}</p>
+//       ) : (
+//         <p>You have no posts yet.</p>
+//       )}
 
-      <CreatePost />
-    </div>
-  );
-}
+//       <CreatePost />
+//     </div>
+//   );
+// }
