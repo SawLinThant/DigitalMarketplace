@@ -5,6 +5,14 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    images:{
+        domains:[
+            "tollgate-upload.s3.ap-southeast-1.amazonaws.com"
+        ]
+    }
+};
 
 export default config;
+
+

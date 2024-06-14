@@ -1,3 +1,5 @@
+import { Label } from "@radix-ui/react-dropdown-menu"
+
 export const PRODUCT_CATEGORIES=[
     {
         label: "Food",
@@ -65,4 +67,34 @@ export const PRODUCT_CATEGORIES=[
  
         ]
      },
+]
+
+export const userType=[
+    {
+        value: "buyer" as const,
+        label: "Buyer",
+    },
+    {
+        value: "seller" as const,
+        label: "Seller",
+    },
+]
+
+export const ProductCategory=[
+    {
+        value: "bag" as const,
+        label: "Bag and Luggage",
+    },
+    {
+        value: "phone",
+        label: "Phone",
+    },
+    {
+        value: "pc_laptop" as const,
+        label: "PC/Laptop",
+    },
+    {
+        value: "clothing" as const,
+        label: "Clothing",
+    },
 ]

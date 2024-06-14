@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "product" ADD COLUMN     "createddate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

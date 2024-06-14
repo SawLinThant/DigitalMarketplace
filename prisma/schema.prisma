@@ -14,36 +14,36 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+// model Post {
+//     id        Int      @id @default(autoincrement())
+//     name      String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+//     createdBy   User   @relation(fields: [createdById], references: [id])
+//     createdById String
 
-    @@index([name])
-}
+//     @@index([name])
+// }
 
 // Necessary for Next auth
-model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+// model Account {
+//     id                String  @id @default(cuid())
+//     userId            String
+//     type              String
+//     provider          String
+//     providerAccountId String
+//     refresh_token     String? // @db.Text
+//     access_token      String? // @db.Text
+//     expires_at        Int?
+//     token_type        String?
+//     scope             String?
+//     id_token          String? // @db.Text
+//     session_state     String?
+//     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
-}
+//     @@unique([provider, providerAccountId])
+// }
 
 model Session {
     id           String   @id @default(cuid())
@@ -55,13 +55,58 @@ model Session {
 
 model User {
     id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
+    username      String?
+    email         String   @unique
+    password      String
+    userType      String   @default("buyer")
     sessions      Session[]
-    posts         Post[]
+    seller        product[]
+    buyer         order[]
+}
+
+model orderProduct {
+    id        String   @id @default(cuid())
+    orderId   String
+    productId String
+    productName String @default("replacedporudct")
+    productPrice String @default("0")
+    order     order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    products  product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    @@unique([orderId, productId])
+}
+
+model productImage{
+    id           String    @id @default(cuid())
+    imageUrl     String
+    productId    String
+    product    product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model product{
+    id           String    @id @default(cuid())
+    name         String
+    sellerId     String  
+    sellerName   String 
+    category     String
+    description  String
+    price        String
+    stripeProductId String?   
+    stripePriceId   String?   
+    approve      Boolean   @default(false)
+    createddate  DateTime @default(now())
+    seller       User     @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+    images       productImage []
+    order        orderProduct[]
+}
+
+model order{
+    id           String @id @default(cuid())
+    paidStatus   Boolean
+    buyerId      String
+    buyerName    String?
+    buyer        User    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+    products     orderProduct[] 
 }
 
 model VerificationToken {
@@ -71,3 +116,4 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
