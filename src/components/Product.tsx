@@ -51,7 +51,7 @@ const ProductComponent = ({ product, index }: Productprops) => {
   if (isVisible && product)
     return (
       <Link
-        className={cn("h-f group/main invisible w-full cursor-pointer", {
+        className={cn("h-full group/main invisible w-full cursor-pointer", {
           "animated-in visible fade-in-5": isVisible,
         })}
         href={`pages/product/${product.id}`}
