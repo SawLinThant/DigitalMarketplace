@@ -37,7 +37,7 @@ const Navitem = ({ category, handleOpen, isOpen, isAnyOpen }: navitemprops) => {
       {isOpen ? (
         <div
           className={cn(
-            "absolute inset-x-0 top-full text-sm text-muted-foreground",
+            "absolute inset-x-0 z-[100] top-full text-sm text-muted-foreground",
             {
               "animate-in fade-in-10 slide-in-from-top-10": !isAnyOpen,
             },

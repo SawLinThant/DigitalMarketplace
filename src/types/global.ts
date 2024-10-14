@@ -65,3 +65,8 @@ export interface Product{
         id?: string | null;
       }[];
 } 
+
+export type SearchParamType={
+  ParamName:string;
+  ParamValue:string;
+}

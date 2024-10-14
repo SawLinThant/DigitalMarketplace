@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
@@ -8,6 +8,7 @@ import NavBar from "~/components/Navbar";
 import { cn } from "~/lib/utils";
 import { Toaster } from "sonner";
 import { SessionProvider, useSession } from "next-auth/react";
+import { SideBarProvider } from "~/hooks/sidebar-context";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,20 +28,26 @@ export default function RootLayout({
 }) {
   return (
     <SessionProvider>
-    <html lang="en" className="h-full">
-      <body
-        className={cn("relative h-full font-sans antialiased", inter.className)}
-      >
-        <main className="relative flex min-h-screen flex-col">
-          
-          <TRPCReactProvider>
-            <NavBar />
-            <div className="flex-1 flex-grow">{children}</div>
-          </TRPCReactProvider>
-        </main>
-        <Toaster position="top-center" richColors />
-      </body>
-    </html>
+      <html lang="en" className="h-full">
+        <body
+          className={cn(
+            "relative h-full font-sans antialiased",
+            inter.className,
+          )}
+        >
+          <main className="relative flex min-h-screen flex-col">
+            <TRPCReactProvider>
+              {/* <NavBar /> */}
+              <SessionProvider>
+                <SideBarProvider>
+                  <div className="flex-1 flex-grow">{children}</div>
+                </SideBarProvider>
+              </SessionProvider>
+            </TRPCReactProvider>
+          </main>
+          <Toaster position="top-center" richColors />
+        </body>
+      </html>
     </SessionProvider>
   );
 }

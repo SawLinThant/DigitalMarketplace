@@ -46,7 +46,7 @@ export const PRODUCT_CATEGORIES=[
     },
 
     {
-        label: "UI Kits",
+        label: "Other",
         value: "ui_kits" as const,//"ui_kits" is not just a generic string, but the exact string literal "ui_kits"
         details:[
          {

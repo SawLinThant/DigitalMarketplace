@@ -11,6 +11,9 @@ export const paymentRouter = createTRPCRouter({
     .input(
       z.object({
         productId: z.array(z.string()),
+        billingAddress:z.string(),
+        billingEmail:z.string(),
+        billingPhone:z.string()
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -60,6 +63,13 @@ export const paymentRouter = createTRPCRouter({
           },
           buyerId: user.session.user.id,
           buyerName: user.session.user.name,
+          billingInfo:{
+            create:{
+              billingAddress:input.billingAddress,
+              billingEmail:input.billingEmail,
+              billingPhone:input.billingPhone
+            }
+          }
         },
       });
 

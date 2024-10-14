@@ -13,6 +13,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { cn } from "~/lib/utils";
+import Image from "next/image";
 
 const Login = () => {
   const {
@@ -37,11 +38,10 @@ const Login = () => {
     console.log(res?.status);
     if (res?.status === 401) {
       toast.error("Login failed");
-    } else if(res?.status==200) {
-      toast.success("Login Successful");   
-    }
-    else{
-      toast.success("Login Successful")
+    } else if (res?.status == 200) {
+      toast.success("Login Successful");
+    } else {
+      toast.success("Login Successful");
     }
   });
 
@@ -54,7 +54,15 @@ const Login = () => {
       <div className="flex h-[28rem] w-[90%] flex-col md:rounded-md md:border md:shadow-lg lg:w-[30rem]">
         <div className="h-25 flex flex-col items-center py-10">
           <Link href="/">
-            <Icons.logo className="h-10 w-10" />
+            {/* <Icons.logo className="h-10 w-10" /> */}
+            <Image
+              src="/MyLogo.png"
+              
+              height={256}
+              width={256}
+              className="h-[80px] w-[80px] object-cover object-center"
+              alt="thank you for your order"
+            />
           </Link>
         </div>
         <div className="flex w-full flex-col items-center gap-6">

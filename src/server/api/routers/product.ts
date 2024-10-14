@@ -3,9 +3,10 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { Session } from "inspector";
 import { QueryValidator } from "~/lib/validators/query-validator";
 import { stripe } from "~/lib/stripe";
-import aws from "aws-sdk"
+import aws from "aws-sdk";
 import { PutObjectRequest } from "aws-sdk/clients/s3";
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from "uuid";
+import { Product } from "~/types/global";
 
 interface PrismaError extends Error {
   code: string;
@@ -14,24 +15,26 @@ interface PrismaError extends Error {
   };
 }
 
-
-
 export const productSubmitInput = z.object({
   name: z.string(),
   category: z.string(),
   description: z.string(),
   price: z.string(),
   base64Image: z.string().array(),
-  images: z.array(z.object({
-    imageUrl: z.string()
-  })).optional()
+  images: z
+    .array(
+      z.object({
+        imageUrl: z.string(),
+      }),
+    )
+    .optional(),
 });
 
 const validateImageURL = (imgURL: string) => {
   try {
     const buf = Buffer.from(
       imgURL.replace(/^data:image\/\w+;base64,/, ""),
-      "base64"
+      "base64",
     );
     return buf;
   } catch (e) {
@@ -39,8 +42,7 @@ const validateImageURL = (imgURL: string) => {
   }
 };
 
-const isBase64Image=(base64String:string)=> {
-  
+const isBase64Image = (base64String: string) => {
   const imageRegex = /^data:image\/(jpeg|jpg|png|gif);base64,/i;
 
   // Check if the base64 string matches the image format regex
@@ -49,30 +51,27 @@ const isBase64Image=(base64String:string)=> {
   }
 
   // Decode the base64 string to a buffer
-  const buffer = Buffer.from(base64String.replace(imageRegex, ''), 'base64');
+  const buffer = Buffer.from(base64String.replace(imageRegex, ""), "base64");
 
   // Check if the decoded buffer has the characteristics of an image file
   // For example, you can check the file signature (magic number)
   const isImage =
-    buffer.length >= 2 &&
-    (buffer[0] === 0xFF && buffer[1] === 0xD8) // JPEG
-    ||
+    (buffer.length >= 2 && buffer[0] === 0xff && buffer[1] === 0xd8) || // JPEG
     (buffer[0] === 0x89 && buffer[1] === 0x50); // PNG
 
   return isImage;
-}
+};
 
 const uploadManager = {
   uploadS3: async (imgURL: string, key: string) => {
-
     const buf = Buffer.from(
       imgURL.replace(/^data:image\/\w+;base64,/, ""),
-      "base64"
+      "base64",
     );
 
     const extension = imgURL.substring(
       "data:image/".length,
-      imgURL.indexOf(";base64")
+      imgURL.indexOf(";base64"),
     );
 
     aws.config.update({
@@ -95,33 +94,31 @@ const uploadManager = {
   },
 };
 
-async function createStripeProduct(name:string,price:number) {
-  try{
+async function createStripeProduct(name: string, price: number) {
+  try {
     const product = await stripe.products.create({
-      name: name
-    })
+      name: name,
+    });
 
     const priceObject = await stripe.prices.create({
       unit_amount: price * 100,
-      currency: 'usd',
-      product: product.id
-    })
+      currency: "usd",
+      product: product.id,
+    });
 
     console.log(priceObject.id);
 
-    return{
+    return {
       stripeProductId: product.id,
-      stripePriceId: priceObject.id
-    }
-
-  }catch(error){
-    console.log('Error creating product in Stripe:', error)
-    throw new Error("Failed to create product in Stripe")
+      stripePriceId: priceObject.id,
+    };
+  } catch (error) {
+    console.log("Error creating product in Stripe:", error);
+    throw new Error("Failed to create product in Stripe");
   }
 }
 
 export const productRouter = createTRPCRouter({
-
   // createStripeProduct: protectedProcedure
   // .input(z.object({
   //   name: z.string(),
@@ -153,7 +150,7 @@ export const productRouter = createTRPCRouter({
   createProduct: protectedProcedure
     .input(productSubmitInput)
     // .output(productSubmitInput)
-    .mutation(async ({ctx, input}) => {
+    .mutation(async ({ ctx, input }) => {
       try {
         const sellerInfo = await ctx.db.user.findFirst({
           where: {
@@ -161,20 +158,25 @@ export const productRouter = createTRPCRouter({
           },
         });
 
-        const {stripeProductId, stripePriceId} = await createStripeProduct(input.name,parseInt(input.price))
+        const { stripeProductId, stripePriceId } = await createStripeProduct(
+          input.name,
+          parseInt(input.price),
+        );
 
-       if(input.base64Image){
-        for(const image of input.base64Image){
-          if(!isBase64Image(image)){
-            throw new Error("Invalid Image Format")
+        if (input.base64Image) {
+          for (const image of input.base64Image) {
+            if (!isBase64Image(image)) {
+              throw new Error("Invalid Image Format");
+            }
           }
         }
-       }
-    
-      //  const uploadpromises = input.images?.map((image) => uploadManager.uploadS3(image.imageUrl,uuidv4()));
-      //  const uploadedImages = await Promise.all(uploadpromises || [])
-      const uploadPromises = input.base64Image?.map((image) => uploadManager.uploadS3(image,uuidv4()))
-      const uploadedImages = await Promise.all(uploadPromises || [])
+
+        //  const uploadpromises = input.images?.map((image) => uploadManager.uploadS3(image.imageUrl,uuidv4()));
+        //  const uploadedImages = await Promise.all(uploadpromises || [])
+        const uploadPromises = input.base64Image?.map((image) =>
+          uploadManager.uploadS3(image, uuidv4()),
+        );
+        const uploadedImages = await Promise.all(uploadPromises || []);
 
         const product = await ctx.db.product.create({
           data: {
@@ -186,34 +188,37 @@ export const productRouter = createTRPCRouter({
             approve: false,
             sellerId: sellerInfo?.id || "",
             sellerName: sellerInfo?.username || "",
-            stripeProductId: stripeProductId ,
+            stripeProductId: stripeProductId,
             stripePriceId: stripePriceId,
-            images:{
-               create: uploadedImages.map((upload, index) => ({
-                imageUrl: `https://${process.env.S3_UPLOAD_BUCKET}.s3.ap-southeast-1.amazonaws.com/${upload.Key}`
+            images: {
+              create: uploadedImages.map((upload, index) => ({
+                imageUrl: `https://${process.env.S3_UPLOAD_BUCKET}.s3.ap-southeast-1.amazonaws.com/${upload.Key}`,
               })),
-            }
+            },
           },
         });
-        return {...product};
+        return { ...product };
       } catch (error: unknown) {
         throw new Error("product creation failed");
       }
     }),
 
-    getProducts:publicProcedure
-    .input(z.object({
-      limit: z.number().min(1).max(100),
-      cursor: z.number().nullish(),
-      query: QueryValidator,}))
-    .query(async({ctx,input}) => {
-      try{
-        const {query, cursor}=input;
-        const {sort, limit = 1, ...queryOpts}= query;
+  getProducts: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100),
+        cursor: z.number().nullish(),
+        query: QueryValidator,
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const { query, cursor } = input;
+        const { sort, limit = 1, ...queryOpts } = query;
 
         const parsedQueryOpts: Record<string, any> = {};
         Object.entries(queryOpts).forEach(([key, value]) => {
-          if (typeof value === 'object' && value !== null) {
+          if (typeof value === "object" && value !== null) {
             Object.entries(value).forEach(([subKey, subValue]) => {
               if (subValue !== undefined) {
                 parsedQueryOpts[`${key}.${subKey}`] = subValue;
@@ -225,139 +230,201 @@ export const productRouter = createTRPCRouter({
         });
 
         const page = cursor || 1;
-        const offset = (page - 1) * limit
+        const offset = (page - 1) * limit;
 
-        const products=await ctx.db.product.findMany({
+        const products = await ctx.db.product.findMany({
           where: {
             approve: false,
             ...parsedQueryOpts,
           },
-          orderBy:{
-            id: 'asc'
+          orderBy: {
+            id: "asc",
           },
           take: limit,
           skip: offset,
-          include:{
-            images: true
-          }
+          include: {
+            images: true,
+          },
         });
 
-        const transformedProduct= products.map((product)=>({
+        const transformedProduct = products.map((product) => ({
           id: product.id,
           name: product.name,
           category: product.category,
           description: product.description,
           price: product.price,
           sellerName: product.sellerName,
-          images: product.images.map((image)=>({id: image.id, image: image.imageUrl}))
-        }))
+          images: product.images.map((image) => ({
+            id: image.id,
+            image: image.imageUrl,
+          })),
+        }));
 
-        const totalProduct= await ctx.db.product.count({
+        const totalProduct = await ctx.db.product.count({
           where: {
             approve: false,
             ...parsedQueryOpts,
-          }
+          },
         });
 
-        const hasNextPage = offset + products.length< totalProduct;
-        const nextPage = hasNextPage? page + 1: null;
+        const hasNextPage = offset + products.length < totalProduct;
+        const nextPage = hasNextPage ? page + 1 : null;
         return {
           products: transformedProduct,
-          nextPage
-        }
-      }catch(e:unknown){
-        console.error('Error fetching products:', e);
-        throw new Error("Fail to load proudct")
+          nextPage,
+        };
+      } catch (e: unknown) {
+        console.error("Error fetching products:", e);
+        throw new Error("Fail to load proudct");
       }
-      
     }),
 
-    getproductById: publicProcedure
-    .input(z.object({
-      id: z.string()
-    }))
-    .query(async({ctx,input}) => {
-      try{
+  getproductById: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
         const product = await ctx.db.product.findFirst({
-          where:{
-            id: input.id
+          where: {
+            id: input.id,
           },
-          include:{
-            images: true
-          }
-          
-        })
-        return product
-      }catch(e:unknown){
-        console.error('Error fetching products:', e);
-        throw new Error("Fail to load proudct")
+          include: {
+            images: true,
+          },
+        });
+        return product;
+      } catch (e: unknown) {
+        console.error("Error fetching products:", e);
+        throw new Error("Fail to load proudct");
       }
     }),
 
-    getCategoryByProductId: publicProcedure
-    .input(z.object({
-      id: z.string()
-    }))
-    .query(async ({ctx,input}) =>{
+  getCategoryByProductId: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
       const category = await ctx.db.product.findFirst({
-        where:{
-          id: input.id
+        where: {
+          id: input.id,
         },
-        select:{
-          category: true
-        }
-      })
+        select: {
+          category: true,
+        },
+      });
     }),
 
-    getCategories:publicProcedure
-    .input(z.object({
-      productIds: z.string().array()
-    }))
-    .query(async ({ctx,input}) => {
-      const {productIds} =input
+  getCategories: publicProcedure
+    .input(
+      z.object({
+        productIds: z.string().array(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { productIds } = input;
       const categories = await ctx.db.product.findMany({
-        where:{
-          id:{
-            in: productIds
-          }
-        },
-        select:{
-          id: true,
-          category: true
-        }
-      })
-      return categories
-    }),
-
-    getImage: publicProcedure
-    .input(z.object({
-      productIds: z.string().array()
-    }))
-    .query(async ({ctx,input}) => {
-      const {productIds} =input
-      const products = await ctx.db.product.findMany({
-        where:{
-          id:{
-            in: productIds
-          }
+        where: {
+          id: {
+            in: productIds,
+          },
         },
         select: {
           id: true,
-          images: true
-        }
-      })
-    
+          category: true,
+        },
+      });
+      return categories;
+    }),
+
+  getImage: publicProcedure
+    .input(
+      z.object({
+        productIds: z.string().array(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { productIds } = input;
+      const products = await ctx.db.product.findMany({
+        where: {
+          id: {
+            in: productIds,
+          },
+        },
+        select: {
+          id: true,
+          images: true,
+        },
+      });
+
       // const imageUrls = products.reduce((acc,product) => {
       //   acc[product.id] = product.images.map((image) => image.imageUrl)
       //   return acc
       // }, {} as {[key:string]:string[]})
-      const imageUrls = products.flatMap(product => product.images.map(image => ({
-        productId: product.id,
-        imageUrl: image.imageUrl
-      })));
-      
-      return{
-       imageUrls
+      const imageUrls = products.flatMap((product) =>
+        product.images.map((image) => ({
+          productId: product.id,
+          imageUrl: image.imageUrl,
+        })),
+      );
+
+      return {
+        imageUrls,
+      };
+    }),
+  getProductList: publicProcedure
+    .input(
+      z.object({
+        skip: z.number(),
+        take: z.number(),
+        name: z.string().default(""),
+        category: z.string().default(""),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const productList = await ctx.db.product.findMany({
+          skip: input.skip,
+          take: input.take,
+          where: {
+            name: { contains: input.name },
+            category: { contains: input.category == "all" ? "":input.category },
+          },
+          include: {
+            images: true,
+          },
+        });
+        const productListCount = await ctx.db.product.count({
+          
+          where: {
+            name: { contains: input.name },
+            category: { contains: input.category == "all" ? "":input.category },
+          },
+         
+        });
+        
+        const data: Product[] = productList.map((product) => {
+          return {
+            id: product.id,
+            name: product.name,
+            category: product.category,
+            description: product.description,
+            price: product.price,
+            sellerName: product.sellerName,
+            images: product.images.map((image) => ({
+              id: image.id,
+              image: image.imageUrl,
+            })),
+          };
+        });
+        return {productList:data,count:productListCount};
+      } catch (e: unknown) {
+        console.error("Error fetching products:", e);
+        throw new Error("Fail to load proudct");
       }
-    })
+    }),
 });

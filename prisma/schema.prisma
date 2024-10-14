@@ -107,6 +107,7 @@ model order{
     buyerName    String?
     buyer        User    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
     products     orderProduct[] 
+    billingInfo  BillingInfo? 
 }
 
 model VerificationToken {
@@ -115,5 +116,14 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model BillingInfo{
+    id           String @id @default(cuid())
+    orderId   String @unique
+    order     order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    billingAddress String
+    billingPhone   String
+    billingEmail   String
 }
 

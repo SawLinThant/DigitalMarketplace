@@ -29,7 +29,7 @@ const ProductComboBox= ({checkBoxHandler}:any)=>{
 
       <PopoverContent>
          <Command>
-            <CommandInput placeholder="Select User Type"/>
+            <CommandInput placeholder="Select Category"/>
             <CommandEmpty>No Category Found</CommandEmpty>
             <CommandGroup>
             {ProductCategory.map((category) => (

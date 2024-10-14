@@ -54,7 +54,7 @@ const ProductComponent = ({ product, index }: Productprops) => {
         className={cn("h-full group/main invisible w-full cursor-pointer", {
           "animated-in visible fade-in-5": isVisible,
         })}
-        href={`pages/product/${product.id}`}
+        href={`/pages/product/${product.id}`}
       >
         <div className="flex flex-col w-full">
           <ImageSlider urls={validUrls}/>

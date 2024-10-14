@@ -204,9 +204,9 @@ const ProductForm = () => {
                   variant: "link",
                   className: "gap-1.5",
                 })}
-                href="/"
+                href="/dashboard/product/list"
               >
-                Back to home
+                View Product List
                 <ArrowRight className="h-4 w-4" />
               </Link>      
             </form>
