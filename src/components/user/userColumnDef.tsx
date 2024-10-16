@@ -25,45 +25,4 @@ export const userColumnDef = [
   
 ];
 
-export const sampleSaleReportData = [
-  {
-    customer: "customer 1",
-    product: "product 1",
-    quantity: 1,
-    amount: 200,
-    status: "processing",
-    createdDate: new Date().toDateString(),
-  },
-  {
-    customer: "customer 2",
-    product: "product 2",
-    quantity: 2,
-    amount: 200,
-    status: "processing",
-    createdDate: new Date().toDateString(),
-  },
-  {
-    customer: "customer 3",
-    product: "product 3",
-    quantity: 1,
-    amount: 200,
-    status: "processing",
-    createdDate: new Date().toDateString(),
-  },
-  {
-    customer: "customer 4",
-    product: "product 4",
-    quantity: 1,
-    amount: 200,
-    status: "Delivered",
-    createdDate: new Date().toDateString(),
-  },
-  {
-    customer: "customer 5",
-    product: "product 5",
-    quantity: 1,
-    amount: 200,
-    status: "Delivered",
-    createdDate: new Date().toDateString(),
-  },
-];
+

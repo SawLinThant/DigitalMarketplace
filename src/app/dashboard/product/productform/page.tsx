@@ -143,7 +143,7 @@ const ProductForm = () => {
           {/* <Link href="/">
             <Icons.logo className="h-10 w-10" />
           </Link> */}
-          <h1 className="font-bold text-lg">Let's get started</h1>
+          <h1 className="font-bold text-lg">Create your product</h1>
         </div>
         <div className="flex w-full flex-col items-center gap-6">
             <form className="flex w-full flex-col items-center sm:pl-5" onSubmit={onSubmit}>

@@ -392,21 +392,23 @@ export const productRouter = createTRPCRouter({
           take: input.take,
           where: {
             name: { contains: input.name },
-            category: { contains: input.category == "all" ? "":input.category },
+            category: {
+              contains: input.category == "all" ? "" : input.category,
+            },
           },
           include: {
             images: true,
           },
         });
         const productListCount = await ctx.db.product.count({
-          
           where: {
             name: { contains: input.name },
-            category: { contains: input.category == "all" ? "":input.category },
+            category: {
+              contains: input.category == "all" ? "" : input.category,
+            },
           },
-         
         });
-        
+
         const data: Product[] = productList.map((product) => {
           return {
             id: product.id,
@@ -421,10 +423,78 @@ export const productRouter = createTRPCRouter({
             })),
           };
         });
-        return {productList:data,count:productListCount};
+        return { productList: data, count: productListCount };
       } catch (e: unknown) {
         console.error("Error fetching products:", e);
         throw new Error("Fail to load proudct");
       }
+    }),
+  addReviewForProudct: protectedProcedure
+    .input(
+      z.object({
+        productId: z.string(),
+        comment: z.string().default(""),
+        rating: z.string().default("0"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db.review.create({
+          data: {
+            comments: input.comment,
+            rating: input.rating,
+            productId: input.productId,
+            userId: ctx.session.user.id,
+          },
+        });
+      } catch (e: any) {}
+    }),
+  getReviewForProduct: protectedProcedure
+    .input(
+      z.object({
+        productId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const reviews = await ctx.db.review.findMany({
+          where: {
+            productId: input.productId,
+          },
+          include: {
+            user: {
+              select: {
+                username: true,
+              },
+            },
+          },
+        });
+        return reviews;
+      } catch (e: any) {}
+    }),
+  updateProduct: protectedProcedure
+    .input(
+      z.object({
+        productId: z.string(),
+        name: z.string(),
+        category: z.string(),
+        price: z.string(),
+        description: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db.product.update({
+          where: {
+            id: input.productId,
+          },
+          data: {
+            name: input.name,
+            category: input.category,
+            description: input.description,
+            price: input.price,
+          },
+        });
+      } catch (e: any) {}
     }),
 });

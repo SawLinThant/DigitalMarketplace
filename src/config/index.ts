@@ -97,4 +97,8 @@ export const ProductCategory=[
         value: "clothing" as const,
         label: "Clothing",
     },
+    {
+        value: "foodAndDrink" as const,
+        label: "Food&Drink",
+    },
 ]

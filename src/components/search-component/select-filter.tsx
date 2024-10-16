@@ -55,7 +55,7 @@ const SelectFilter = ({
   return (
     <div className="flex w-full items-center">
       <Select onValueChange={onSelect} defaultValue={defautValue || ""}>
-        <SelectTrigger className="flex w-full justify-start gap-x-2 border border-black bg-[#F2F2F2]">
+        <SelectTrigger className="flex w-full justify-start gap-x-2 border border-black  bg-gray-800 text-white focus:outline-none outline-none">
           <SelectValue placeholder="Filter Category" />
         </SelectTrigger>
         <SelectContent>

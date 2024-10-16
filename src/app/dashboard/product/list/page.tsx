@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React from "react";
+import MaxWidthWrapper from "~/components/MaxWidthWrapper";
 import PaginationComponent from "~/components/pagination";
 import AdminProductList from "~/components/Product/AdminProductList";
 import { productColumnDef } from "~/components/Product/ProductColumnDef";
@@ -48,48 +49,50 @@ const ProductList = () => {
     Math.floor((productList?.count || 0) / items_per_page) +
     ((productList?.count || 0) % items_per_page ? 1 : 0);
   return (
-    <div className="flex w-full flex-col items-start justify-start gap-y-5 px-[30px] py-[30px]">
-      <div className="flex w-full justify-center gap-x-6">
-        <div className="flex w-[200px] items-start gap-1 py-4">
-          {/* <ProductComboBox checkBoxHandler={checkBoxHandler} /> */}
-          <SelectFilter
-            searchQuery={searchQuery}
-            path="/dashboard/product/list"
-            keyWord="category"
-            selectProps={selectProps}
-          />
+    <MaxWidthWrapper>
+      <div className="flex w-full flex-col items-start justify-start gap-y-5 px-[10px] py-[30px]">
+        <div className="flex w-full flex-col sm:flex-row gap-y-4 justify-center gap-x-6">
+          <div className="flex w-[200px] items-start gap-1 ">
+            {/* <ProductComboBox checkBoxHandler={checkBoxHandler} /> */}
+            <SelectFilter
+              searchQuery={searchQuery}
+              path="/dashboard/product/list"
+              keyWord="category"
+              selectProps={selectProps}
+            />
+          </div>
+          <div className="flex items-center">
+            <SearchInput
+              searchQuery={searchQuery}
+              path="/dashboard/product/list"
+              keyWord="product"
+            />
+          </div>
+          <div className="flex w-full sm:justify-end justify-start ">
+            <Link href={`/dashboard/product/productform`}>
+              <button className="border-[1px] p-[10px] bg-gray-800 rounded-[5px] text-white">
+                Create New Product
+              </button>
+            </Link>
+          </div>
         </div>
-        <div className="flex items-center">
-          <SearchInput
-            searchQuery={searchQuery}
-            path="/dashboard/product/list"
-            keyWord="product"
-          />
-        </div>
-        <div className="flex w-full justify-end ">
-          <Link href={`/dashboard/product/productform`}>
-            <button className="border-[1px] p-[10px] ">
-              Create New Product
-            </button>
-          </Link>
-        </div>
-      </div>
 
-      <div className="flex w-full">
-        <AdminProductList
-          data={productList?.productList || []}
-          columnDef={productColumnDef}
-        />
+        <div className="flex w-full">
+          <AdminProductList
+            data={productList?.productList || []}
+            columnDef={productColumnDef}
+          />
+        </div>
+        <div className="mt-20 flex w-full items-center justify-center">
+          <PaginationComponent
+            searchQuery={searchQuery}
+            path="/dashboard/product/list"
+            keyWord="pageno"
+            totalPages={totalPages}
+          />
+        </div>
       </div>
-      <div className="mt-20">
-        <PaginationComponent
-          searchQuery={searchQuery}
-          path="/dashboard/product/list"
-          keyWord="pageno"
-          totalPages={totalPages}
-        />
-      </div>
-    </div>
+    </MaxWidthWrapper>
   );
 };
 

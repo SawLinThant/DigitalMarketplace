@@ -59,12 +59,12 @@ const SheetMenu = () => {
 
       <SheetContent
         side={"left"}
-        className="w-full bg-[#687887] px-0 md:w-[250px]"
+        className="w-full bg-black px-0 md:w-[250px]"
       >
-        <div className=" flex w-full  flex-col bg-[#687887] pt-10">
+        <div className=" flex w-full  flex-col bg-black pt-10">
           {routes.map((route) => (
             <div
-              className={`ml-[20px] flex cursor-pointer flex-row items-center justify-center  ${route?.selected[0] ? "border-0 text-white" : "text-[#A2ACB5]"}`}
+              className={`ml-[20px] flex cursor-pointer flex-row items-center justify-center  ${route?.selected[0] ? "border-0 font-bold text-white" : "font-light text-[#A2ACB5]"}`}
               onClick={() => onSelect(route?.route?.id, route?.route?.path)}
             >
               <SheetClose className="flex h-[50px] w-full flex-row items-center justify-center ">
@@ -72,7 +72,7 @@ const SheetMenu = () => {
                   {route?.route?.icon}
                   {route?.route?.label}
                   <div
-                    className={`absolute right-0 flex h-[50px] w-[10px] ${route?.selected[0] ? "bg-green-300" : "bg-[#687887]"}`}
+                    className={`absolute right-0 flex h-[50px] w-[10px] ${route?.selected[0] ? "bg-gray-400" : "bg-black"}`}
                   ></div>
                 </div>
               </SheetClose>

@@ -1,7 +1,7 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import React, { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import Image from "next/image";
@@ -14,7 +14,8 @@ const OrderDetailPage = () => {
   const orderDetail = api.order.getOrderById.useQuery({
     id: orderId || "",
   });
-  console.log(orderDetail.data);
+  const router=useRouter();
+  
   useEffect(() => {
     setisMounted(true);
   }, []);
@@ -29,10 +30,10 @@ const OrderDetailPage = () => {
             <span className="text-[30px]">Order ID:</span>
             <span className="text-[25px] text-gray-500">#{orderId}</span>
             <div className="mt-[20px] flex w-full">
-              {orderDetail.data?.products.map((orderItem, index) => {
+              {orderDetail.data?.products.map((orderItem:any, index:number) => {
                 return (
                   <>
-                    <div className="flex w-full  rounded-[5px] border-[1px] p-[10px] shadow-lg">
+                    <div className="flex w-full  rounded-[5px] border-[1px] p-[10px] shadow-lg" key={index}>
                       <div className="flex w-full">
                         <Image
                           src={orderItem.products.images[0]?.imageUrl || ""}
@@ -42,11 +43,14 @@ const OrderDetailPage = () => {
                           className=" rounded-md object-cover object-center sm:h-48 sm:w-48"
                         />
                       </div>
-                      <div className="flex w-full flex-col">
+                      <div className="flex w-full flex-col relative">
                         <span className="text-[30px]">
                           {orderItem?.productName}
                         </span>
                         <span>${orderItem?.productPrice}</span>
+                        <div className="absolute bottom-2">
+                          <button className="bg-black px-[8px] py-[5px] rounded-[5px] text-white" onClick={()=>router.push(`/pages/product/review?id=${orderItem.productId}`)}>Review Prodcut</button>
+                        </div>
                       </div>
                     </div>
                   </>

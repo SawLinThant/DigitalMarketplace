@@ -1,11 +1,10 @@
-'use client'
+"use client";
 
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { SearchParamType } from "~/types/global";
-
 
 const PaginationComponent = ({
   searchQuery,
@@ -61,17 +60,19 @@ const PaginationComponent = ({
         <span>Previous</span>
       </button>
       <div className="flex flex-row items-center gap-x-3">
-        {pagesToBeRendered?.map((p,index) => (
+        {pagesToBeRendered?.map((p, index) => (
           <>
-            {p<=totalPages && <button
-              key={index}
-              className={clsx("", {
-                "border bg-gray-200 px-2": currentPageNo == p,
-              })}
-              onClick={() => onPageSelected(p)}
-            >
-              {p}
-            </button>}
+            {p <= totalPages && (
+              <button
+                key={index + p}
+                className={clsx("", {
+                  "border bg-gray-200 px-2": currentPageNo == p,
+                })}
+                onClick={() => onPageSelected(p)}
+              >
+                {p}
+              </button>
+            )}
           </>
         ))}
         {currentPageNo < totalPages && (
