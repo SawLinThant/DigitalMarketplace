@@ -12,16 +12,19 @@ import {
 } from "~/components/ui/select";
 import { SearchParamType } from "~/types/global";
 
-
 const SelectFilter = ({
   searchQuery,
   path,
   keyWord,
   selectProps,
+  label,
+  placeHolder
 }: {
   searchQuery: SearchParamType[];
   path: string;
   keyWord: string;
+  label?: string;
+  placeHolder?:string;
   selectProps: { key: string; value: string }[];
 }) => {
   const router = useRouter();
@@ -55,12 +58,12 @@ const SelectFilter = ({
   return (
     <div className="flex w-full items-center">
       <Select onValueChange={onSelect} defaultValue={defautValue || ""}>
-        <SelectTrigger className="flex w-full justify-start gap-x-2 border border-black  bg-gray-800 text-white focus:outline-none outline-none">
-          <SelectValue placeholder="Filter Category" />
+        <SelectTrigger className="flex w-full justify-start gap-x-2 border border-black  bg-gray-800 text-white outline-none focus:outline-none">
+          <SelectValue placeholder={placeHolder} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Category</SelectLabel>
+            <SelectLabel>{label}</SelectLabel>
             {selectProps.map((s) => (
               <SelectItem value={s.value}>{s.key}</SelectItem>
             ))}

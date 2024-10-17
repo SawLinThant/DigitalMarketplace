@@ -73,7 +73,7 @@ model orderProduct {
     productPrice String @default("0")
     order     order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
     products  product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-
+    quantity  Int?
     @@unique([orderId, productId])
 }
 

@@ -13,7 +13,12 @@ export const paymentRouter = createTRPCRouter({
         productId: z.array(z.string()),
         billingAddress:z.string(),
         billingEmail:z.string(),
-        billingPhone:z.string()
+        billingPhone:z.string(),
+        orderItems:z.array(z.object({
+          productId:z.string(),
+          quantity:z.number(),
+          // pricePerItem:z.number()
+        })).default([])
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -51,16 +56,29 @@ export const paymentRouter = createTRPCRouter({
       //     }
       //    })
 
+      const orderItems=await Promise.all(
+        input.orderItems.map(async(orderItem)=>{
+          const productInfo=await ctx.db.product.findFirst({
+            where:{
+              id:orderItem.productId
+            }
+          })
+          return {
+              productId: orderItem.productId,
+              productName: productInfo?.name || "",
+              productPrice: productInfo?.price || "",
+              quantity:orderItem.quantity
+          }
+        })
+      )
+
       const order = await ctx.db.order.create({
         data: {
           paidStatus: false,
           products: {
-            create: validProduct.map((product) => ({
-              productId: product.id,
-              productName: product.name || "",
-              productPrice: product.price || ""
-            })),
+            create: orderItems
           },
+          status:"processing",
           buyerId: user.session.user.id,
           buyerName: user.session.user.name,
           billingInfo:{

@@ -14,8 +14,8 @@ const OrderDetailPage = () => {
   const orderDetail = api.order.getOrderById.useQuery({
     id: orderId || "",
   });
-  const router=useRouter();
-  
+  const router = useRouter();
+
   useEffect(() => {
     setisMounted(true);
   }, []);
@@ -29,33 +29,56 @@ const OrderDetailPage = () => {
           <div className="flex w-full flex-col">
             <span className="text-[30px]">Order ID:</span>
             <span className="text-[25px] text-gray-500">#{orderId}</span>
-            <div className="mt-[20px] flex w-full">
-              {orderDetail.data?.products.map((orderItem:any, index:number) => {
-                return (
-                  <>
-                    <div className="flex w-full  rounded-[5px] border-[1px] p-[10px] shadow-lg" key={index}>
-                      <div className="flex w-full">
-                        <Image
-                          src={orderItem.products.images[0]?.imageUrl || ""}
-                          alt="product-image"
-                          height={256}
-                          width={256}
-                          className=" rounded-md object-cover object-center sm:h-48 sm:w-48"
-                        />
-                      </div>
-                      <div className="flex w-full flex-col relative">
-                        <span className="text-[30px]">
-                          {orderItem?.productName}
-                        </span>
-                        <span>${orderItem?.productPrice}</span>
-                        <div className="absolute bottom-2">
-                          <button className="bg-black px-[8px] py-[5px] rounded-[5px] text-white" onClick={()=>router.push(`/pages/product/review?id=${orderItem.productId}`)}>Review Prodcut</button>
+            <span className="text-[15px] text-black">
+              Status: {orderDetail.data?.status}
+            </span>
+            <div className="mt-[20px] flex w-full flex-col gap-y-2">
+              {orderDetail.data?.products.map(
+                (orderItem, index: number) => {
+                  return (
+                    <>
+                      <div
+                        className="flex w-full  rounded-[5px] border-[1px] p-[10px] shadow-lg"
+                        key={index}
+                      >
+                        <div className="flex w-full">
+                          <Image
+                            src={orderItem.products.images[0]?.imageUrl || ""}
+                            alt="product-image"
+                            height={256}
+                            width={256}
+                            className=" rounded-md object-cover object-center sm:h-48 sm:w-48"
+                          />
+                        </div>
+                        <div className="relative flex w-full flex-col">
+                          <span className="text-[30px]">
+                            {orderItem?.productName}
+                          </span>
+                          <div className="flex items-center">
+                            <span>${orderItem?.productPrice}</span>
+                            <span className="text-[12px] text-gray-500">&nbsp;{"/per-item"}</span>
+                          </div>
+                          <span className="">
+                            Quantity:&nbsp;{orderItem?.quantity}
+                          </span>
+                          <div className="absolute bottom-2">
+                            <button
+                              className="rounded-[5px] bg-black px-[8px] py-[5px] text-white"
+                              onClick={() =>
+                                router.push(
+                                  `/pages/product/review?id=${orderItem.productId}`,
+                                )
+                              }
+                            >
+                              Review Prodcut
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </>
-                );
-              })}
+                    </>
+                  );
+                },
+              )}
             </div>
           </div>
           <form className=" flex w-full flex-col gap-x-2 gap-y-4">

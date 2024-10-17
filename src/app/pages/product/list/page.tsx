@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Input } from "postcss";
 import React from "react";
 import { Pagination } from "swiper/modules";
+import MaxWidthWrapper from "~/components/MaxWidthWrapper";
 import PaginationComponent from "~/components/pagination";
 import ProductListMarketplace from "~/components/Product/ProductListMarketplace";
 import ProductComboBox from "~/components/ProductCategoryComboBox";
@@ -21,6 +22,11 @@ const selectProps: { key: string; value: string }[] = [
   { key: "PC/Laptop", value: "pc_laptop" },
   { key: "Clothing", value: "clothing" },
 ];
+
+const sortProps: { key: string; value: string }[] = [
+  { key: "Low to high", value: "desc" },
+  { key: "High to low", value: "asc" },
+];
 const searchQuery: SearchParamType[] = [
   {
     ParamName: "product",
@@ -31,6 +37,10 @@ const searchQuery: SearchParamType[] = [
     ParamName: "category",
     ParamValue: "",
   },
+  {
+    ParamName: "sort",
+    ParamValue: "",
+  },
 ];
 
 const ProductList = () => {
@@ -39,58 +49,79 @@ const ProductList = () => {
   const currentPageNo = (searchParams.get("pageno") || 1) as number;
   const skipSize = (currentPageNo - 1) * items_per_page;
   const category = searchParams.get("category");
+  const sortBy = searchParams.get("sort");
   const product = searchParams.get("product");
   const { data: productList, isLoading } = api.product.getProductList.useQuery({
     skip: skipSize,
     take: items_per_page,
     name: product || "",
     category: category || "",
+    sortBy: !sortBy
+      ? "asc"
+      : sortBy === "asc" || sortBy === "desc"
+        ? sortBy
+        : "desc",
   });
-  
+
   const totalPages =
     Math.floor((productList?.count || 0) / items_per_page) +
     ((productList?.count || 0) % items_per_page ? 1 : 0);
-  
+
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <div className="flex w-full justify-center gap-x-6">
-        <div className="flex w-[200px] items-start gap-1 py-4">
-          {/* <ProductComboBox checkBoxHandler={checkBoxHandler} /> */}
-          <SelectFilter
-            searchQuery={searchQuery}
-            path="/pages/product/list"
-            keyWord="category"
-            selectProps={selectProps}
-          />
-        </div>
-        <div className="flex items-center">
-          {/* <input
+    <MaxWidthWrapper>
+      <div className="flex w-full flex-col items-start justify-center">
+        <div className="flex w-full justify-start gap-x-6">
+          <div className="flex w-[200px] items-start gap-1 py-4">
+            {/* <ProductComboBox checkBoxHandler={checkBoxHandler} /> */}
+            <SelectFilter
+              searchQuery={searchQuery}
+              path="/pages/product/list"
+              keyWord="category"
+              selectProps={selectProps}
+              label="Category"
+              placeHolder="Select Category"
+            />
+          </div>
+          <div className="flex w-[200px] items-start gap-1 py-4">
+            {/* <ProductComboBox checkBoxHandler={checkBoxHandler} /> */}
+            <SelectFilter
+              searchQuery={searchQuery}
+              path="/pages/product/list"
+              keyWord="sort"
+              selectProps={sortProps}
+              label="Sort"
+              placeHolder="Sort by price"
+            />
+          </div>
+          <div className="flex items-center">
+            {/* <input
             className="h-[40px] w-[200px] rounded-l-[5px] border-[1px]"
             placeholder="Search product"
           />
           <button className="h-[40px] items-center justify-center rounded-r-[5px] border-[1px] bg-blue-400 p-[10px]">
             <span>Search</span>
           </button> */}
-          <SearchInput
+            <SearchInput
+              searchQuery={searchQuery}
+              path="/pages/product/list"
+              keyWord="product"
+            />
+          </div>
+        </div>
+        <ProductListMarketplace
+          products={productList?.productList || []}
+          isLoading={isLoading}
+        />
+        <div className="mt-20 flex w-full justify-center">
+          <PaginationComponent
             searchQuery={searchQuery}
             path="/pages/product/list"
-            keyWord="product"
+            keyWord="pageno"
+            totalPages={totalPages}
           />
         </div>
       </div>
-      <ProductListMarketplace
-        products={productList?.productList || []}
-        isLoading={isLoading}
-      />
-      <div className="mt-20">
-        <PaginationComponent
-          searchQuery={searchQuery}
-          path="/pages/product/list"
-          keyWord="pageno"
-          totalPages={totalPages}
-        />
-      </div>
-    </div>
+    </MaxWidthWrapper>
   );
 };
 

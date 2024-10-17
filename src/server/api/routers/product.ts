@@ -383,6 +383,7 @@ export const productRouter = createTRPCRouter({
         take: z.number(),
         name: z.string().default(""),
         category: z.string().default(""),
+        sortBy:z.enum(["asc","desc"]).default("desc")
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -395,6 +396,10 @@ export const productRouter = createTRPCRouter({
             category: {
               contains: input.category == "all" ? "" : input.category,
             },
+            
+          },
+          orderBy:{
+            price:input.sortBy
           },
           include: {
             images: true,

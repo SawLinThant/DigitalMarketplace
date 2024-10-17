@@ -234,7 +234,7 @@ const Page = ({ params }: PageProps) => {
         <ProductReel
           title={`Similar ${label}`}
           subtitle={`Browse Similar high-quality ${label}`}
-          href="/"
+          href="/pages/product/list"
           query={{ category: productInfo?.category, limit: 4 }}
         />
       )}
