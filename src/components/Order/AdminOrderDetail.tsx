@@ -82,7 +82,7 @@ const AdminOrderDetail = () => {
                               {orderItem?.productName}
                             </span>
                             <span>${orderItem?.productPrice}</span>
-                            <div className="absolute bottom-2">
+                            {/* <div className="absolute bottom-2">
                               <button
                                 className="rounded-[5px] bg-black px-[8px] py-[5px] text-white"
                                 onClick={() =>
@@ -93,7 +93,7 @@ const AdminOrderDetail = () => {
                               >
                                 Review Prodcut
                               </button>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </>
@@ -142,7 +142,7 @@ const AdminOrderDetail = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectLabel>Fruits</SelectLabel>
+                            <SelectLabel>Status</SelectLabel>
                             <SelectItem value="processing">
                               Processing
                             </SelectItem>

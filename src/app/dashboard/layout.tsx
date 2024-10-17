@@ -1,7 +1,10 @@
+'use client'
+
 import { Suspense } from "react";
 import MobileNav from "~/components/MobileNav";
 import SheetMenu from "~/components/SheetMenu";
 import SideBarNav from "~/components/SidebarNav";
+import isAdmin from "~/hoc/isAdmin";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -21,4 +24,4 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default layout;
+export default isAdmin(layout) ;

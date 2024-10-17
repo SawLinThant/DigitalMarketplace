@@ -32,7 +32,7 @@ const Register = () => {
   const [userType,setUserType]=useState<string>("");
 
   const checkBoxHandler=(userType:string)=>{
-    console.log(userType);
+    
        setUserType(userType);
   }
 

@@ -16,7 +16,7 @@ const NavBar = () => {
   const session = useSession();
 
   const userType = session?.data?.user?.userType;
-  console.log(userType);
+  
 
   const user = session?.data?.user?.username;
   return (
