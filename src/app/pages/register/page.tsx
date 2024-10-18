@@ -73,7 +73,7 @@ const Register = () => {
       username: username,
       email: email,
       password: password,
-      userType: userType,
+      userType: "buyer",
     });
   });
 
@@ -144,9 +144,9 @@ const Register = () => {
                   })}
                 />
               </div>
-              <div className="w-[80%] pb-7 pt-2">
+              {/* <div className="w-[80%] pb-7 pt-2">
                 <ComboBox checkBoxHandler={checkBoxHandler} />
-              </div>
+              </div> */}
 
               <Button className="w-[80%]">Register</Button>
               <Link

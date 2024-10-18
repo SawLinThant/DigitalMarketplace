@@ -59,7 +59,7 @@ const AdminOrderDetail = () => {
             <div className="flex w-full flex-col">
               <span className="text-[30px]">Order ID:</span>
               <span className="text-[25px] text-gray-500">#{orderId}</span>
-              <div className="mt-[20px] flex w-full">
+              <div className="mt-[20px] flex w-full flex-col">
                 {orderDetail.data?.products.map(
                   (orderItem: any, index: number) => {
                     return (
@@ -81,7 +81,16 @@ const AdminOrderDetail = () => {
                             <span className="text-[30px]">
                               {orderItem?.productName}
                             </span>
-                            <span>${orderItem?.productPrice}</span>
+                            <div className="flex items-center">
+                              <span>${orderItem?.productPrice}</span>
+                              <span className="text-[12px] text-gray-500">
+                                &nbsp;{"/per-item"}
+                              </span>
+                            </div>
+                            <span className="">
+                              Quantity:&nbsp;{orderItem?.quantity}
+                            </span>
+
                             {/* <div className="absolute bottom-2">
                               <button
                                 className="rounded-[5px] bg-black px-[8px] py-[5px] text-white"
@@ -156,7 +165,7 @@ const AdminOrderDetail = () => {
                   <div className="flex items-center justify-between  border-gray-200 pt-4">
                     <div className="flex w-full flex-col items-center justify-center">
                       <button
-                        className="h-[40px] w-[100px] rounded-[5px] bg-black p-[7px] text-[12px] text-white flex items-center justify-center"
+                        className="flex h-[40px] w-[100px] items-center justify-center rounded-[5px] bg-black p-[7px] text-[12px] text-white"
                         type="button"
                         onClick={onSubmitStatus}
                       >
@@ -188,7 +197,13 @@ const AdminOrderDetail = () => {
                           </>
                         )}
                       </button>
-                      <button className="underline" onClick={()=>router.push('/dashboard/order/list')} type="button">back</button>
+                      <button
+                        className="underline"
+                        onClick={() => router.push("/dashboard/order/list")}
+                        type="button"
+                      >
+                        back
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -51,7 +51,7 @@ const ProductList = () => {
   return (
     <MaxWidthWrapper>
       <div className="flex w-full flex-col items-start justify-start gap-y-5 px-[10px] py-[30px]">
-        <div className="flex w-full flex-col sm:flex-row gap-y-4 justify-center gap-x-6">
+        <div className="flex w-full flex-col sm:flex-row gap-y-4 justify-center items-center gap-x-6">
           <div className="flex w-[200px] items-start gap-1 ">
             {/* <ProductComboBox checkBoxHandler={checkBoxHandler} /> */}
             <SelectFilter
@@ -59,6 +59,8 @@ const ProductList = () => {
               path="/dashboard/product/list"
               keyWord="category"
               selectProps={selectProps}
+              label="Category"
+              placeHolder="Category"
             />
           </div>
           <div className="flex items-center">
