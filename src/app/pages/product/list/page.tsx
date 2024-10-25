@@ -21,12 +21,12 @@ const selectProps: { key: string; value: string }[] = [
   { key: "Phone", value: "phone" },
   { key: "PC/Laptop", value: "pc_laptop" },
   { key: "Clothing", value: "clothing" },
-  { key: "Food&Drink", value: "foodAndDrink" },
+  { key: "Food&Drink", value: "foodanddrink" },
 ];
 
 const sortProps: { key: string; value: string }[] = [
-  { key: "Low to high", value: "desc" },
-  { key: "High to low", value: "asc" },
+  { key: "High to low", value: "desc" },
+  { key: "Low to high", value: "asc" },
 ];
 const searchQuery: SearchParamType[] = [
   {
@@ -46,7 +46,7 @@ const searchQuery: SearchParamType[] = [
 
 const ProductList = () => {
   const searchParams = useSearchParams();
-  const items_per_page = 8;
+  const items_per_page = 5;
   const currentPageNo = (searchParams.get("pageno") || 1) as number;
   const skipSize = (currentPageNo - 1) * items_per_page;
   const category = searchParams.get("category");
@@ -71,7 +71,7 @@ const ProductList = () => {
   return (
     <MaxWidthWrapper>
       <div className="flex w-full flex-col items-start justify-center">
-        <div className="flex w-full justify-start gap-x-6">
+        <div className="flex w-full sm:justify-start justify-center flex-col sm:flex-row gapy-y-2 gap-x-6">
           <div className="flex w-[200px] items-start gap-1 py-4">
             {/* <ProductComboBox checkBoxHandler={checkBoxHandler} /> */}
             <SelectFilter

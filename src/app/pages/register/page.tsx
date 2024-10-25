@@ -44,7 +44,7 @@ const Register = () => {
     },
     onSuccess: async () => {
       toast.success("Registration successful");
-      // router.push('/')
+      router.push('/pages/login')
     },
     onError: async (error, variable, rollback) => {
       toast.error("Registration Failed");

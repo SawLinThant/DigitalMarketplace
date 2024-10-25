@@ -66,7 +66,7 @@ export const paymentRouter = createTRPCRouter({
           return {
               productId: orderItem.productId,
               productName: productInfo?.name || "",
-              productPrice: productInfo?.price || "",
+              productPrice: productInfo?.price?.toString() || "",
               quantity:orderItem.quantity
           }
         })

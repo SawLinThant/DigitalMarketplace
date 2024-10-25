@@ -91,7 +91,7 @@ model product{
     sellerName   String 
     category     String
     description  String
-    price        String
+    price        Float?
     stripeProductId String?   
     stripePriceId   String?   
     approve      Boolean   @default(false)

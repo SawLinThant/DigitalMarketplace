@@ -36,13 +36,13 @@ const Productplaceholder = () => {
 
 const ProductListMarketplace = (props: IProductListProp) => {
   return (
-    <div className="mt-[20px] flex w-full gap-x-4 gap-y-4">
+    <div className="mt-[20px] flex-wrap flex w-full flex-col sm:flex-row gap-x-4 gap-y-4">
       {props.isLoading && <Productplaceholder />}
       {!props.isLoading && (
         <>
           {props.products.map((product, index) => {
             return (
-              <div className="w-[200px]">
+              <div className=" w-full sm:w-[200px]">
                 <ProductComponent
                   index={index}
                   product={product}

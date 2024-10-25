@@ -23,7 +23,7 @@ interface PageProps {
 
 const BREADCRUMBS = [
   { id: 1, name: "Home", href: "/" },
-  { id: 1, name: "Products", href: "/products" },
+  { id: 1, name: "Products", href: "/pages/product/list" },
 ];
 
 const Page = ({ params }: PageProps) => {
@@ -59,7 +59,7 @@ const Page = ({ params }: PageProps) => {
 
   const productName = productInfo?.name;
   const price = productInfo?.price;
-  const updatedPrice: string = price === undefined ? "" : price;
+  const updatedPrice: string = price === undefined ? "" : price?.toString() || "";
 
   const label = ProductCategory.find(
     ({ value }) => value === productInfo?.category,

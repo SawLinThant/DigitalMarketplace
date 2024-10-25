@@ -60,7 +60,7 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     if (productInfo !== null) {
-      reset(productInfo);
+      reset({...productInfo,price:productInfo?.price?.toString()});
       setCategory(productInfo?.category || "");
     }
   }, [productInfo]);
@@ -120,7 +120,7 @@ const ProductDetailPage = () => {
                         <SelectItem value="phone">Phone</SelectItem>
                         <SelectItem value="pc_laptop">PC/Laptop</SelectItem>
                         <SelectItem value="clothing">Clothing</SelectItem>
-                        <SelectItem value="foodAndDrink">Food&Drink</SelectItem>
+                        <SelectItem value="foodanddrink">Food&Drink</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>

@@ -22,7 +22,7 @@ const ProductComboBox= ({checkBoxHandler}:any)=>{
          aria-expanded={open}
          className="w-full justify-between"
          >
-            {value? ProductCategory.find((producttype)=>producttype.value===value)?.label:"Select category..."}
+            {value? ProductCategory.find((producttype)=> producttype.value==value)?.label:"Select category..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
          </Button>
       </PopoverTrigger>
@@ -37,7 +37,9 @@ const ProductComboBox= ({checkBoxHandler}:any)=>{
                 key={category.value}
                 value={category.value}
                 onSelect={(currentValue) => {
+                  
                   setValue(currentValue === value ? "" : currentValue)
+              
                   setOpen(false)
                   checkBoxHandler(category.value)
                 }}

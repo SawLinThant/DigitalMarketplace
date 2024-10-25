@@ -183,7 +183,7 @@ export const productRouter = createTRPCRouter({
             name: input.name,
             category: input.category,
             description: input.description,
-            price: input.price || "",
+            price: parseFloat(input.price) || 0,
             //image: input.image,
             approve: false,
             sellerId: sellerInfo?.id || "",
@@ -420,7 +420,7 @@ export const productRouter = createTRPCRouter({
             name: product.name,
             category: product.category,
             description: product.description,
-            price: product.price,
+            price: product.price?.toString() || "",
             sellerName: product.sellerName,
             images: product.images.map((image) => ({
               id: image.id,
@@ -497,7 +497,7 @@ export const productRouter = createTRPCRouter({
             name: input.name,
             category: input.category,
             description: input.description,
-            price: input.price,
+            price: parseFloat(input.price),
           },
         });
       } catch (e: any) {}
