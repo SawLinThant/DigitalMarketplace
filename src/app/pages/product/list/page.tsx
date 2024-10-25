@@ -21,6 +21,7 @@ const selectProps: { key: string; value: string }[] = [
   { key: "Phone", value: "phone" },
   { key: "PC/Laptop", value: "pc_laptop" },
   { key: "Clothing", value: "clothing" },
+  { key: "Food&Drink", value: "foodAndDrink" },
 ];
 
 const sortProps: { key: string; value: string }[] = [

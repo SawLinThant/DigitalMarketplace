@@ -140,7 +140,7 @@ const Page = () => {
                                 fill
                                 src={imageSrc}
                                 alt="product-image"
-                                className="h-full w-full rounded-md object-cover object-center sm:h-48 sm:w-48"
+                                className="h-full w-full rounded-md  object-center sm:h-48 sm:w-48"
                               />
                             </div>
                           ) : (

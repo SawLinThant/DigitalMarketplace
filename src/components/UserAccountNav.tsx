@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 
 import {
   DropdownMenu,
@@ -14,13 +13,11 @@ import { signOut } from "next-auth/react";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/react";
 
-
-const UserAccountNav = ({user,userType}:any) => {
-  
+const UserAccountNav = ({ user, userType }: any) => {
   const handleLogout = async () => {
     await signOut({
       callbackUrl: "/",
-      redirect: true,    
+      redirect: true,
     });
     console.log("logout");
   };
@@ -47,8 +44,18 @@ const UserAccountNav = ({user,userType}:any) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-         {userType==="seller"?(<Link href="/pages/productform">Sellar Dashboard</Link>):<Link href="/">Account</Link>} 
+          {userType === "seller" ? (
+            <Link href="/pages/productform">Sellar Dashboard</Link>
+          ) : (
+            <Link href="/">Account</Link>
+          )}
         </DropdownMenuItem>
+
+        {userType == "admin" && (
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/user/list">Dashboard</Link>
+          </DropdownMenuItem>
+        )}
 
         <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
           Logout

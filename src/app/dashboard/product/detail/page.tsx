@@ -145,7 +145,7 @@ const ProductDetailPage = () => {
                   alt="product-image"
                   height={256}
                   width={256}
-                  className=" rounded-md object-cover object-center sm:h-48 sm:w-48"
+                  className=" rounded-md  object-center sm:h-48 sm:w-48"
                 />
               </div>
             </div>

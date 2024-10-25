@@ -90,9 +90,10 @@ const ImageSlider = ({ urls }: ImageSliderProps) => {
             className=" h-full w-full object-cover object-center"
           >
             <Image
-              fill
+              width={256}
+              height={256}
               loading="eager"
-              className=" h-full w-full object-cover object-center"
+              className=" h-full w-full  object-center"
               src={url}
               alt="product image"
             />

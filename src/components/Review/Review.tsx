@@ -32,12 +32,12 @@ const Review = () => {
 
   const { register, handleSubmit } = useForm<any>();
 
-  const onSubmit=handleSubmit(async(credentials:IReviewProps)=>{
-      setReview.mutate({
-        productId:productId || "",
-        comment:credentials.comment
-      })
-  })
+  const onSubmit = handleSubmit(async (credentials: IReviewProps) => {
+    setReview.mutate({
+      productId: productId || "",
+      comment: credentials.comment,
+    });
+  });
 
   const urls = product.data?.images
     .map(({ imageUrl }) => (typeof imageUrl === "string" ? imageUrl : imageUrl))
@@ -51,30 +51,37 @@ const Review = () => {
             alt="product-image"
             height={256}
             width={256}
-            className=" rounded-md object-cover object-center sm:h-60 sm:w-60"
+            className=" rounded-md  object-center sm:h-60 sm:w-60"
           />
           <div className="flex flex-col">
             <span className="text-[30px]">{product?.data?.name}</span>
             <div>
-              <span className="">{"Price: "}</span>
-              <span className="">{product?.data?.price}</span>
+              <span className="font-semibold text-black">{"Price: "}</span>
+              <span className="">${product?.data?.price}</span>
             </div>
             <div>
-              <span className="">{"Category: "}</span>
+              <span className="font-semibold text-black">{"Category: "}</span>
               <span className="">{product?.data?.category}</span>
             </div>
-            <span>Description</span>
-            <span>{product.data?.description}</span>
+            <span className="mt-[20px] font-semibold text-black">
+              Description
+            </span>
+            <span className="text-[12px] text-gray-500">
+              {product.data?.description}
+            </span>
           </div>
         </div>
-        <form className="mt-[10px] flex w-full flex-col items-center gap-y-5 sm:mt-[20px]" onSubmit={onSubmit}>
+        <form
+          className="mt-[10px] flex w-full flex-col items-center gap-y-5 sm:mt-[20px]"
+          onSubmit={onSubmit}
+        >
           <textarea
             placeholder="Comment"
             className="flex h-[200px] w-full rounded-[5px] border-[1px] p-[5px]"
             {...register("comment", {})}
           />
           <button
-            className="w-full items-center justify-center rounded-[5px] border-[1px] p-[5px] sm:w-[200px]"
+            className="w-full items-center justify-center rounded-[5px] border-[1px] bg-black p-[5px] text-white sm:w-[200px]"
             type="submit"
           >
             {setReview.isLoading ? <>{"...Loading"}</> : <>Submit</>}

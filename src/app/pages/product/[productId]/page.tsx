@@ -139,7 +139,7 @@ const Page = ({ params }: PageProps) => {
                 alt="product-image"
                 height={256}
                 width={256}
-                className=" rounded-md object-cover object-center sm:h-60 sm:w-60"
+                className=" rounded-md  object-center sm:h-60 sm:w-60"
               />
             </div>
           </div>

@@ -97,7 +97,7 @@ const ThankYou = ({ params }: { params: { id: string } }) => {
         <Image
           src="/checkout-thank-you.jpg"
           fill
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full  object-center"
           alt="thank you for your order"
         />
       </div>
@@ -147,7 +147,7 @@ const ThankYou = ({ params }: { params: { id: string } }) => {
                         <div className="relative h-24 w-24">
                           {imageUrls[product.productId] ? (
                             <Image
-                              className="flex-none rounded-md bg-gray-100 object-cover object-center"
+                              className="flex-none rounded-md bg-gray-100  object-center"
                               src={imageUrl ? imageUrl : ""}
                               alt={
                                 categories[product.productId]?.category ||

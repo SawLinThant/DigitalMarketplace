@@ -36,7 +36,7 @@ const Productplaceholder = () => {
 
 const ProductListMarketplace = (props: IProductListProp) => {
   return (
-    <div className="mt-[20px] flex gap-x-4 gap-y-4">
+    <div className="mt-[20px] flex w-full gap-x-4 gap-y-4">
       {props.isLoading && <Productplaceholder />}
       {!props.isLoading && (
         <>
@@ -51,6 +51,13 @@ const ProductListMarketplace = (props: IProductListProp) => {
               </div>
             );
           })}
+        </>
+      )}
+      {!props.isLoading && props.products.length < 1 && (
+        <>
+          <div className="flex w-full items-center justify-center">
+            <span>Currently No products</span>
+          </div>
         </>
       )}
     </div>
