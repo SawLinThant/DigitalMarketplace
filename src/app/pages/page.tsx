@@ -41,11 +41,11 @@ export default async function Home() {
           <span className="text-blue-600">Products</span>.
         </h1>
         <p className="mt-6 text-lg max-w-prose text-muted-foreground">
-          welcome to DigitalHippo. Every asset on our platform is verified by
+           Every asset on our platform is verified by
           our team for high quality standard.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-6">
-          <Link href="/product" className={buttonVariants()}>Browse Trending</Link>
+          <Link href="/pages/product/list" className={buttonVariants()}>Browse Trending</Link>
           <Button variant='ghost'>Our quality promise &rarr;</Button>
         </div>
       </div>
