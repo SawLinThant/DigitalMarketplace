@@ -26,14 +26,14 @@ const NavBar = () => {
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
               <MobileNav />
-              <div className="ml-4 flex lg:ml-0">
-                <Link href="/">
+              <div className="ml-4 flex lg:ml-0 h-full w-auto pb-1 bg-transparent">
+                <Link className="flex items-center justify-center" href="/">
                   <Image
                     src="/MyLogo.png"
-                    height={256}
-                    width={256}
-                    className="h-[80px] w-[80px] object-cover object-center"
-                    alt="thank you for your order"
+                    height={55}
+                    width={55}
+                    className="object-cover object-center"
+                    alt="logo"
                   />
                 </Link>
               </div>
