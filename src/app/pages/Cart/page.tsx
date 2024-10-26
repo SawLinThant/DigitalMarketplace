@@ -23,7 +23,7 @@ interface IBillingProps {
 }
 
 const Page = () => {
-  const { items, removeItem, addItem, clearCart } = useCart();
+  const { items, removeItem, addItem, clearCart,clearSingleItem } = useCart();
   const [isMounted, setisMounted] = useState<boolean>(false);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const router = useRouter();
@@ -223,7 +223,7 @@ const Page = () => {
                             <div className="absolute right-0 top-0">
                               <Button
                                 aria-label="remove product"
-                                onClick={() => removeItem(product.id)}
+                                onClick={() => clearSingleItem(product.id)}
                                 variant="ghost"
                               >
                                 <X className="h-5 w-5" aria-hidden="true"></X>

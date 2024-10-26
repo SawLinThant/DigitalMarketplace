@@ -14,7 +14,7 @@ const CartItem = ({
 }) => {
   const image = product.images[0]?.image;
   const imageSrc = typeof image === "string" ? image : image?.url;
-  const { removeItem, addItem } = useCart();
+  const { removeItem, addItem ,clearSingleItem} = useCart();
 
   const label = ProductCategory.find(
     ({ value }) => value === product.category,
@@ -50,7 +50,7 @@ const CartItem = ({
             </span>
             <div className="mt-4 text-xs text-muted-foreground">
               <button
-                onClick={() => removeItem(product.id)}
+                onClick={() => clearSingleItem(product.id)}
                 className="flex items-center gap-0.5"
               >
                 <X className="h-4 w-3" />
