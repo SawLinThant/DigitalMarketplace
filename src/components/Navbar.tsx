@@ -80,9 +80,7 @@ const NavBar = () => {
                       ></span>
                     </div>
                   )}
-                  <div className="ml-4 flow-root lg:ml-6">
-                    <Cart />
-                  </div>
+                 
                   <div className="ml-4 flow-root lg:ml-6">
                     <Link href={'/pages/order/list'}>
                       <svg
@@ -102,6 +100,9 @@ const NavBar = () => {
                     </Link>
                   </div>
                 </div>
+                <div className="ml-4 flow-root lg:ml-6">
+                    <Cart />
+                  </div>
               </div>
             </div>
           </div>

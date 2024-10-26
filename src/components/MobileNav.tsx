@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PRODUCT_CATEGORIES } from "~/config";
+import Cart from "./Cart";
 
 // export async function getServerSideProps({ req, res }:any) {
 //   return {
@@ -154,7 +155,7 @@ const MobileNav =  () => {
                   >
                     Sign up
                   </Link>
-                </div>
+                </div>          
               )}
             </div>
           </div>
