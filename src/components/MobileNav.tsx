@@ -108,7 +108,7 @@ const MobileNav =  () => {
                             />
                           </div>
                           <Link
-                            href={item.href}
+                            href="/pages/product/list"
                             className="mt-6 block font-medium text-gray-900"
                           >
                             {item.name}

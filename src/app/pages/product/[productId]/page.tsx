@@ -53,9 +53,9 @@ const Page = ({ params }: PageProps) => {
 
   const transformedProduct = transformedProductInfo(productInfo);
 
-  if (!transformedProduct) return <div>Loading</div>;
+  if (!transformedProduct) return <div className="w-full h-[75vh] flex items-center justify-center">Loading...</div>;
 
-  if (isLoading) return <div>Loading</div>;
+  if (isLoading) return <div className="w-full h-[75vh] flex items-center justify-center">Loading...</div>;
 
   const productName = productInfo?.name;
   const price = productInfo?.price;
