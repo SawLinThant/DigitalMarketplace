@@ -34,7 +34,7 @@
     "@trpc/react-query": "^10.45.1",
     "@trpc/server": "^10.45.1",
     "@uploadthing/react": "^6.5.4",
-    "argon2": "^0.40.1",
+    "argon2": "^0.31.2",
     "aws-sdk": "^2.1632.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
