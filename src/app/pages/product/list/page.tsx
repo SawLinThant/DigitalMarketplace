@@ -46,7 +46,7 @@ const searchQuery: SearchParamType[] = [
 
 const ProductList = () => {
   const searchParams = useSearchParams();
-  const items_per_page = 5;
+  const items_per_page = 10;
   const currentPageNo = (searchParams.get("pageno") || 1) as number;
   const skipSize = (currentPageNo - 1) * items_per_page;
   const category = searchParams.get("category");

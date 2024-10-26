@@ -20,7 +20,7 @@ const NavBar = () => {
 
   const user = session?.data?.user?.username;
   return (
-    <div className="z-60 sticky inset-x-0 top-0 h-16 bg-white">
+    <div className="z-[100] sticky inset-x-0 top-0 h-16 bg-white">
       <header className="relative bg-white">
         <MaxWidthWrapper>
           <div className="border-b border-gray-200">
