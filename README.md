@@ -23,9 +23,11 @@ Before you begin, ensure you have the following installed on your local machine:
 - Unzip the project file
 - change directory to the main project folder
 
-## Application Properties
+## Setting up Environment File
 
-Setup these environment variables in your **'.env'** file
+create **'.env'** in project root directory
+
+Setup these environment variables along with thier values in your **'.env'** file
 
 - **DATABASE_URL**
 - **NEXTAUTH_SECRET**
@@ -49,8 +51,19 @@ run this command to install necessary dependencies
 -npm install
 ```
 
+run this command to migrate database schema to your database
+
+```bash
+-npx prisma migrate dev
+```
+
 ## Running the Project
 
 If all above requirements are met, you can start running your project.
+
+
+```bash
+-npm run dev
+```
 
 Then, Access the application by navigating to **'http://localhost:3000'**
