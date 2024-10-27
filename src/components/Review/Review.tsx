@@ -45,7 +45,7 @@ const Review = () => {
   return (
     <MaxWidthWrapper>
       <div className="flex w-full flex-col  gap-x-9">
-        <div className="mt-[20px] flex flex-col rounded-lg  sm:flex-row">
+        <div className="mt-[20px] flex flex-col rounded-lg gap-x-5 sm:flex-row">
           <Image
             src={product?.data?.images[0]?.imageUrl || ""}
             alt="product-image"
