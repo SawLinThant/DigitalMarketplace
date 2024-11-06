@@ -67,3 +67,6 @@ If all above requirements are met, you can start running your project.
 ```
 
 Then, Access the application by navigating to **'http://localhost:3000'**
+
+## Demo App
+Access my demoapp at 'https://digital-marketplace-peach-omega.vercel.app'
